@@ -2,6 +2,7 @@ import requests
 from datetime import datetime
 from config import Config
 
+
 class WeatherService:
     def __init__(self):
         self.api_key = Config.OPENWEATHER_API_KEY
@@ -78,4 +79,30 @@ class WeatherService:
           
         except Exception as e:
             print(f"Error fetching weather data:{e}")
+            return None
+        
+    def get_weather_by_coordinates(self, lat, lon):
+        try:
+            response = requests.get(
+                f"{self.base_url}?lat={lat}&lon={lon}&appid={self.api_key}&units={self.units}&lang={self.lang}"
+            )
+
+            if response.status_code != 200:
+                return None
+            
+            current_data = response.json()
+            current = {
+                "temperature": round(current_data["main"]["temp"]),
+                "description": current_data["weather"][0]["description"].capitalize(),
+                "humidity": current_data["main"]["humidity"],
+                "wind_speed": round(current_data["wind"]["speed"] * 3.6, 1 ),
+                "icon_url": f"http://openweathermap.org/img/wn/{current_data['weather'][0]['icon']}@2x.png",
+                "city_name": current_data["name"],
+                "country": current_data["sys"].get("country", "")
+            }
+
+            return current
+        
+        except Exception as e:
+            print(f"Error fetching weather by coordinates: {e}")
             return None
