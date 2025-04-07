@@ -20,8 +20,8 @@ class Location:
             response = requests.get("http://ip-api.com/json/{}".format(ip))
             data = response.json()
             if data['status'] == 'success':
-                return data['lat'], data['lon']
+                return data["city"]
         except Exception as e:
             print(f"Error getting location: {e}")
-        return None, None
+        return None
 

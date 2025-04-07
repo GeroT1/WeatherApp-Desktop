@@ -1,0 +1,61 @@
+/* styles.css */
+
+/* Estilo para los valores del clima */
+
+
+
+QLabel#weather_value {
+    background-color: #f0f0f0;
+    padding: 3px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+/* Estilo para el nombre de la ciudad */
+QLabel#city_name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Estilo para el nombre del país */
+QLabel#country_name {
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+/* Estilo para el título del clima */
+QLabel#weather_title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+QLabel#forecast_title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+/* Estilos para el botón */
+QPushButton {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #2980b9;
+}
+
+/* Estilos para el campo de entrada */
+QLineEdit {
+    padding: 5px;
+    border: 1px solid #bdc3c7;
+    border-radius: 3px;
+}
