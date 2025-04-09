@@ -1,61 +1,310 @@
-/* styles.css */
+/* Estilos generales */
+QWidget {
+    background-color: #f0f2f5;
+    color: #333;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
 
-/* Estilo para los valores del clima */
+/* Estilos para los widgets del clima principal */
+QLabel#city_name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
 
+QLabel#country_name {
+    font-size: 22px;
+    color: #3498db;
+    margin-left: 5px;
+}
 
+QLabel#weather_title, QLabel#forecast_title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
 
 QLabel#weather_value {
-    background-color: #f0f0f0;
-    padding: 3px;
-    border-radius: 3px;
-    font-size: 14px;
-    color: #2c3e50;
+    font-size: 18px;
+    color: #34495e;
+    padding: 5px;
+    border-radius: 5px;
 }
 
-/* Estilo para el nombre de la ciudad */
-QLabel#city_name {
+QLabel#status_label {
     font-size: 16px;
+    color: #e74c3c;
+    padding: 10px;
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: 5px;
+    margin: 5px;
+}
+
+/* Estilo para la temperatura principal */
+QLabel#weather_temp_label {
+    font-size: 42px;
+    font-weight: bold;
+    color: #3498db;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Estilos para la previsión del tiempo */
+QLabel#forecast_date {
+    font-size: 18px;
     font-weight: bold;
     color: #2c3e50;
+    padding-bottom: 5px;
+    border-radius: 5px;
 }
 
-/* Estilo para el nombre del país */
-QLabel#country_name {
+/* Campo de entrada */
+QLineEdit {
+    padding: 8px;
+    border: 2px solid #bdc3c7;
+    border-radius: 5px;
     font-size: 14px;
-    color: #7f8c8d;
+    background-color: #ffffff;
+    min-width: 200px;
 }
 
-/* Estilo para el título del clima */
-QLabel#weather_title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #3498db;
-    margin-bottom: 10px;
+QLineEdit:focus {
+    border: 2px solid #3498db;
 }
 
-QLabel#forecast_title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #3498db;
-    margin-bottom: 10px;
-}
-
-/* Estilos para el botón */
+/* Botón para obtener el clima */
 QPushButton {
     background-color: #3498db;
     color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 QPushButton:hover {
     background-color: #2980b9;
 }
 
-/* Estilos para el campo de entrada */
-QLineEdit {
+QPushButton:pressed {
+    background-color: #1f618d;
+}
+
+QPushButton:disabled {
+    background-color: #bdc3c7;
+    color: #7f8c8d;
+}
+
+/* Estilo para el grid del pronóstico */
+QWidget#forecast_grid {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    min-height: 180px;
+}
+
+/* Contenedor para el grid del pronóstico con líneas horizontales */
+QWidget#forecast_container {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 5px;
+    min-height: 200px;
+    border-top: 1px solid #e0e0e0;    /* Línea superior */
+    border-bottom: 1px solid #e0e0e0; /* Línea inferior */
+}
+
+/* Estilos para los íconos - Mejorando contraste para nubes */
+QLabel#weather_icon, QLabel[objectName="forecast_icon"] {
+    padding: 10px;
+    background-color: #c9e6ff; /* Azul muy claro para contraste con nubes */
+    border: 2px solid #90caf9;
+    border-radius: 8px;
+    min-width: 70px;
+    min-height: 70px;
+    margin: 5px;
+}
+
+/* Mensaje de error */
+QMessageBox {
+    background-color: #ffffff;
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 120px;
+}
+
+QMessageBox QLabel {
+    color: #e74c3c;
+    font-size: 14px;
+    padding: 10px;
+    min-width: 380px;
+    max-width: 380px;
+}
+
+QMessageBox QPushButton {
+    min-width: 70px;
+    margin: 10px;
+}
+
+/* Dar un poco de espacio entre elementos */
+QWidget#weather_grid, QWidget#forecast_grid {
+    margin: 10px;
+}
+
+/* Estilo para el fondo del panel principal del clima */
+QWidget#weather_panel {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+}
+
+/* Estilos para el pronóstico ampliado */
+QWidget#forecast_grid QLabel {
+    font-size: 16px;
     padding: 5px;
-    border: 1px solid #bdc3c7;
-    border-radius: 3px;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Clases para diferentes condiciones climáticas */
+QLabel[weatherCondition="clear"] {
+    background-color: #e6f2ff;
+    color: #1a75ff;
+}
+
+QLabel[weatherCondition="clouds"] {
+    background-color: #f2f2f2;
+    color: #666666;
+}
+
+QLabel[weatherCondition="rain"] {
+    background-color: #e6f0f7;
+    color: #0066cc;
+}
+
+QLabel[weatherCondition="snow"] {
+    background-color: #f7f7f7;
+    color: #8c8c8c;
+}
+
+QLabel[weatherCondition="thunderstorm"] {
+    background-color: #e6e6e6;
+    color: #333333;
+}
+
+QLabel[weatherCondition="mist"] {
+    background-color: #f0f0f0;
+    color: #737373;
+}
+
+/* Dark mode styles */
+
+
+QWidget[darkMode="true"] {
+    background-color: #1f2937;
+    color: #e5e7eb;
+}
+
+QWidget[darkMode="true"] QLabel#city_name {
+    color: #f0f2f5;
+}
+
+QWidget[darkMode="true"] QLabel#country_name {
+    color: #60a5fa;
+}
+
+QWidget[darkMode="true"] QLabel#weather_title, QWidget[darkMode="true"] QLabel#forecast_title {
+    color: #f5f0f0;
+}
+
+QWidget[darkMode="true"] QLabel#weather_value {
+    color: #d1d5db;
+}
+
+QWidget[darkMode="true"] QLabel#status_label {
+    color: #f87171;
+    background-color: rgba(248, 113, 113, 0.1);
+}
+
+QWidget[darkMode="true"] QLabel#weather_temp_label {
+    color: #60a5fa;
+}
+
+QWidget[darkMode="true"] QLabel#forecast_date {
+    border-radius: 5px;
+    color: #f0f2f5;
+}
+
+QWidget[darkMode="true"] QLineEdit {
+    background-color: #374151;
+    color: #e5e7eb;
+    border: 2px solid #4b5563;
+}
+
+QWidget[darkMode="true"] QLineEdit:focus {
+    border: 2px solid #60a5fa;
+}
+
+QWidget[darkMode="true"] QPushButton {
+    background-color: #60a5fa;
+    color: #1f2937;
+}
+
+QWidget[darkMode="true"] QPushButton:hover {
+    background-color: #3b82f6;
+}
+
+QWidget[darkMode="true"] QPushButton:pressed {
+    background-color: #2563eb;
+}
+
+QWidget[darkMode="true"] QPushButton:disabled {
+    background-color: #4b5563;
+    color: #9ca3af;
+}
+
+QWidget[darkMode="true"] QWidget#forecast_container {
+    background-color: rgba(46, 59, 78, 0.7);
+    border-top: 1px solid #4b5563;    /* Línea superior - modo oscuro */
+    border-bottom: 1px solid #4b5563; /* Línea inferior - modo oscuro */
+}
+
+QWidget[darkMode="true"] QLabel#weather_icon, QWidget[darkMode="true"] QLabel[objectName="forecast_icon"] {
+    background-color: #1e3a5f; /* Azul oscuro para contraste con nubes en modo oscuro */
+    border: 2px solid #3b82f6;
+}
+
+/* Variantes del modo oscuro según el clima */
+QWidget[darkMode="true"] QLabel[weatherCondition="clear"] {
+    background-color: #172554;
+    color: #93c5fd;
+}
+
+QWidget[darkMode="true"] QLabel[weatherCondition="clouds"] {
+    background-color: #1e293b;
+    color: #cbd5e1;
+}
+
+QWidget[darkMode="true"] QLabel[weatherCondition="rain"] {
+    background-color: #0c4a6e;
+    color: #7dd3fc;
+}
+
+QWidget[darkMode="true"] QLabel[weatherCondition="snow"] {
+    background-color: #1e293b;
+    color: #e2e8f0;
+}
+
+QWidget[darkMode="true"] QLabel[weatherCondition="thunderstorm"] {
+    background-color: #18181b;
+    color: #d4d4d8;
+}
+
+QWidget[darkMode="true"] QLabel[weatherCondition="mist"] {
+    background-color: #27272a;
+    color: #d4d4d8;
 }

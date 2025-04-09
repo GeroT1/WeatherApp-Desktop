@@ -46,38 +46,64 @@ class WeatherService:
         
     def get_forecast_data(self, city):
         try:
-            # Forecast data is not available in the free version of the API.
             forecast_response = requests.get(
-                f"{self.base_url_forecast}?q={city}&appid={self.api_key}&units=={self.units}&lang={self.lang}&cnt=40"
+                f"{self.base_url_forecast}?q={city}&appid={self.api_key}&units={self.units}&lang={self.lang}&cnt=40"
             )
 
             if forecast_response.status_code != 200:
                 return []
             
             forecast_data = forecast_response.json()
-
-            forecast = []
-            days_added = set()
-
+            
+            # Agrupar pronósticos por día
+            daily_forecasts = {}
+            
             for item in forecast_data["list"]:
                 dt = datetime.fromtimestamp(item["dt"])
                 day_str = dt.strftime("%Y-%m-%d")
-
-                if day_str not in days_added and dt.hour in [11, 12, 13, 14]:
-                    days_added.add(day_str)
-                    forecast.append({
+                
+                # Inicializar entrada para este día si no existe
+                if day_str not in daily_forecasts:
+                    daily_forecasts[day_str] = {
                         "date": dt.strftime("%a %d"),
-                        "temp_min": round(item["main"]["temp_min"]),
-                        "temp_max": round(item["main"]["temp_max"]),
-                        "icon_url": f"http://openweathermap.org/img/wn/{item['weather'][0]['icon']}.png"
-                    })
-
-                    if len(forecast) >= 5: # Limit to 5 days
-                        break
-
-            return forecast     
-          
+                        "temp_min": float('9999'),  # Un valor alto inicial
+                        "temp_max": float('-9999'),  # Un valor bajo inicial
+                        "icon": None,
+                        "icon_count": {},  # Para contar ocurrencias de cada icono
+                    }
+                
+                # Actualizar mínimo y máximo
+                temp = item["main"]["temp"]
+                daily_forecasts[day_str]["temp_min"] = min(daily_forecasts[day_str]["temp_min"], item["main"]["temp_min"])
+                daily_forecasts[day_str]["temp_max"] = max(daily_forecasts[day_str]["temp_max"], item["main"]["temp_max"])
+                
+                # Contar ocurrencias de cada icono
+                icon = item['weather'][0]['icon']
+                if icon not in daily_forecasts[day_str]["icon_count"]:
+                    daily_forecasts[day_str]["icon_count"][icon] = 0
+                daily_forecasts[day_str]["icon_count"][icon] += 1
+            
+            # Convertir el diccionario a una lista y seleccionar el icono más frecuente para cada día
+            forecast = []
+            for day_str, day_data in sorted(daily_forecasts.items())[:5]:  # Limitar a 5 días
+                # Encontrar el icono más frecuente
+                if day_data["icon_count"]:
+                    most_common_icon = max(day_data["icon_count"].items(), key=lambda x: x[1])[0]
+                    day_data["icon_url"] = f"http://openweathermap.org/img/wn/{most_common_icon}.png"
+                
+                # Redondear temperaturas
+                day_data["temp_min"] = round(day_data["temp_min"])
+                day_data["temp_max"] = round(day_data["temp_max"])
+                
+                # Eliminar datos temporales
+                day_data.pop("icon_count", None)
+                day_data.pop("icon", None)
+                
+                forecast.append(day_data)
+            
+            return forecast
+            
         except Exception as e:
-            print(f"Error fetching weather data:{e}")
-            return None
+            print(f"Error al obtener datos del pronóstico: {str(e)}")
+            return []
         
