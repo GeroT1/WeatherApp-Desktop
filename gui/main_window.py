@@ -62,28 +62,43 @@ class WeatherWorker(QThread):
         except Exception as e:
             self.error.emit(f"Error: {str(e)}")
 
+def get_icon_path(icon_url):
+    if "http" in icon_url:
+        icon_url = icon_url.split("/")[-1].split(".")[0]
+    return os.path.join("assets", "weather_icons", f"{icon_url}.png")
+
 class IconLoader(QThread):
     icon_loaded = pyqtSignal(str, QPixmap)
 
     def __init__(self, icon_urls):
         super().__init__()
         self.icon_urls = icon_urls
+        os.makedirs(os.path.join("assets", "weather_icons"), exist_ok=True)
 
     def run(self):
         for url in self.icon_urls:
             if url in ICON_CACHE:
                 self.icon_loaded.emit(url, ICON_CACHE[url])
             else:
-                try:
-                    icon_response = requests.get(url)
-                    if icon_response.status_code == 200:
-                        icon_data = icon_response.content
-                        icon_pixmap = QPixmap()
-                        icon_pixmap.loadFromData(icon_data)
-                        ICON_CACHE[url] = icon_pixmap
-                        self.icon_loaded.emit(url, icon_pixmap)
-                except Exception as e:
-                    print(f"Error loading icon from {url}: {str(e)}")
+                icon_url = url.split("/")[-1].split(".")[0]
+                local_path = get_icon_path(icon_url)
+
+                if os.path.exists(local_path):
+                    icon_pixmap = QPixmap(local_path)
+                    ICON_CACHE[url] = icon_pixmap
+                    self.icon_loaded.emit(url, icon_pixmap)
+                else:
+                    try:
+                        icon_response = requests.get(url)
+                        if icon_response.status_code == 200:
+                            icon_data = icon_response.content
+                            icon_pixmap = QPixmap()
+                            icon_pixmap.loadFromData(icon_data)
+                            ICON_CACHE[url] = icon_pixmap
+                            icon_pixmap.save(local_path, "PNG")
+                            self.icon_loaded.emit(url, icon_pixmap)
+                    except Exception as e:
+                        print(f"Error loading icon from {url}: {str(e)}")
 
 class CustomErrorDialog(QDialog):
     def __init__(self, message, parent=None):
