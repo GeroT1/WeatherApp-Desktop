@@ -681,8 +681,8 @@ class WeatherGUI(QWidget):
             self.weather_description_label.setStyleSheet("font-size: 18px;")
 
         if height < 600:
-            self.weather_label.setstyleSheet("font-size: 18px; padding-top: 10px; padding-bottom: 5px;")
-            self.forecast_label.setstyleSheet("font-size: 18px; padding-top: 10px; padding-bottom: 5px;")
+            self.weather_label.setStyleSheet("font-size: 18px; padding-top: 10px; padding-bottom: 5px;")
+            self.forecast_label.setStyleSheet("font-size: 18px; padding-top: 10px; padding-bottom: 5px;")
         else:
             self.weather_label.setStyleSheet("font-size: 20px; padding-top: 20px; padding-bottom: 10px;")
             self.forecast_label.setStyleSheet("font-size: 20px; padding-top: 20px; padding-bottom: 10px;")
